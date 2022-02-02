@@ -1,5 +1,9 @@
-import Registration as Rg
-import Login as Lg
+def main():
+    import Registration as Rg
+    import Login as Lg
 
-window = Rg.RegWindow()
-#logIn = Lg.LogInWindow()
+    REG_WINDOW = Rg.RegWindow()
+    LOG_IN_WINDOW = Lg.LogInWindow()
+
+if __name__ == '__main__': 
+    main()
