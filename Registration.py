@@ -2,9 +2,17 @@ import tkinter as tk
 from tkinter.messagebox import showinfo
 from PIL import Image, ImageTk
 import customtkinter
+
+#Database Module
 import pyodbc 
+
+#Module for adding date of last login
 from datetime import date
+
+#Validation Module
 import re
+
+#Hash module
 from hashlib import sha256
 
 class RegWindow(object):
@@ -126,8 +134,8 @@ class RegWindow(object):
 
 
     def moveToLogin(self):
-        pass
-
+        self.destroy()
+    
 
     def Register(self):
         #Getting variables from the tkinter entry boxes
@@ -151,6 +159,7 @@ class RegWindow(object):
                     hashed_password = self.hashPassword(password_var)
                     #Calls the function to add the user
                     self.addUser(username_var,hashed_password)
+                    self.root.destroy()
                 else:
                     self.clearButtonPressed()
             else:
@@ -215,11 +224,17 @@ class RegWindow(object):
         params = (user_to_query) #This adds the variables
 
         record = conn.execute(sql,params) #Does the query
-        if record == None: #If no record was found
-            return in_database
-        else: #If a record was found
-            in_database = True
-            showinfo("Window", "Username allready in use")
+        for row in record:
+            x = row
+
+        try: #This try will only work if x could be defined, x can only be define if the for loop could run i.e if there was a record
+            if x[0] == None: #Will never go but allows the else condition
+                pass
+            else: #If a record was found
+                in_database = True
+                showinfo("Window", "Username allready in use")
+                return in_database
+        except: #If it could not define x, i.e no record
             return in_database
 
 
@@ -258,4 +273,5 @@ class RegWindow(object):
                 today) #This adds the variables
         conn.execute(sql,params)
         conn.commit() #This accutally sends of the command
+
 
